@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -15,8 +15,8 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "noImplicitAny": false // to use untyped modules
+    "noImplicitAny": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "test/**/*"]
+  "exclude": ["node_modules"]
 }

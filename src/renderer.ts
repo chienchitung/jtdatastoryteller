@@ -31,8 +31,9 @@ export class SqrlStrategy implements RenderStrategy {
 
   render(templateName: string, data: Record<string, unknown>): string {
     const template = this.templateProvider.get(templateName)
+    // Squirrelly doesn't support 'filename' parameter, use 'name' instead
     return renderWithSqrl(template.content, data, {
-      filename: template.filePath,
+      name: templateName,
     }) as string
   }
 }
