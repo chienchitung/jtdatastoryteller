@@ -3,9 +3,8 @@ node_modules/
 
 # Package manager lockfiles
 pnpm-lock.yaml
+package-lock.json
 yarn.lock
-notablog-starter/cache
-notablog-starter/public
 
 # macOS
 .DS_Store
