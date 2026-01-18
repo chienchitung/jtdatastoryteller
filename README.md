@@ -125,6 +125,40 @@ node bin/cli.js preview <path_to_blog> [options]
 - `url: my-post` → 生成 `my-post.html`
 - `url: ` (留空) → 自動生成網址
 
+### 圖片更新與快取管理
+
+#### 🖼️ 智能圖片管理
+
+當您在 Notion 中替換圖片時，Notablog 會自動處理圖片的下載和清理：
+
+**自動清理被替換的圖片**：
+- 系統會追蹤每個頁面使用的圖片
+- 當頁面的圖片被替換時，舊圖片會自動刪除
+- 不會影響其他頁面的圖片
+
+**更新 Notion 圖片的步驟**：
+
+1. 在 Notion 中替換圖片
+2. 編輯頁面內容（例如加個空格再刪除）來觸發 `lastEditedTime` 更新
+3. 執行生成命令：
+   ```bash
+   node bin/cli.js generate my-blog
+   ```
+
+**強制重新下載所有圖片**：
+
+如果圖片沒有更新，可以清除快取重新生成：
+
+```bash
+# 清除快取
+find my-blog/cache -type f -delete
+
+# 重新生成（會下載最新圖片並自動刪除舊圖片）
+node bin/cli.js generate my-blog
+```
+
+> 💡 **提示**：圖片檔案會儲存在 `<your-blog>/public/assets/notion/` 目錄中，檔名格式為 `{blockId}-{filename}`
+
 ## 🛠️ 開發指南
 
 ### 專案結構
@@ -196,9 +230,10 @@ themes/pure-ejs/
 本專案基於 [dragonman225/notablog](https://github.com/dragonman225/notablog) 並進行了以下改進：
 
 1. **外部連結支援**：在 `parseTable.ts` 和 `renderPost.ts` 中新增外部連結檢測
-2. **TypeScript 配置優化**：修正 `tsconfig.json` 的 moduleResolution 設定
-3. **渲染引擎修復**：修正 Squirrelly 渲染器的參數問題
-4. **專案結構整理**：移除未使用的檔案和重複配置
+2. **智能圖片管理**：自動清理被替換的舊圖片，避免累積無用檔案
+3. **TypeScript 配置優化**：修正 `tsconfig.json` 的 moduleResolution 設定
+4. **渲染引擎修復**：修正 Squirrelly 渲染器的參數問題
+5. **專案結構整理**：移除未使用的檔案和重複配置
 
 ## 📤 部署
 

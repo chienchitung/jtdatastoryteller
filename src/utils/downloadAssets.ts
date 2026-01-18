@@ -15,6 +15,7 @@ export async function downloadAssets(
   }
 
   const downloads: Promise<void>[] = []
+  const currentAssets = new Set<string>() // Track assets needed for this page
 
   // @ts-ignore
   visit(tree, (node: any) => {
@@ -72,6 +73,9 @@ export async function downloadAssets(
           const localPath = path.join(assetDir, localFilename)
           const publicPath = `assets/notion/${localFilename}`
 
+          // Track this asset as needed
+          currentAssets.add(localFilename)
+
           downloads.push(downloadFile(url, localPath).then(() => {
             updateCb(publicPath)
           }).catch(err => {
@@ -81,6 +85,49 @@ export async function downloadAssets(
   }
 
   await Promise.all(downloads)
+
+  // Clean up old assets for this page's blocks
+  cleanupOldAssets(assetDir, tree, currentAssets)
+}
+
+/**
+ * Remove old assets that belong to blocks in this page but are no longer used
+ */
+function cleanupOldAssets(assetDir: string, tree: NAST.Block, currentAssets: Set<string>) {
+  if (!fs.existsSync(assetDir)) return
+
+  // Collect all block IDs from this page
+  const pageBlockIds = new Set<string>()
+  // @ts-ignore
+  visit(tree, (node: any) => {
+    if (node.uri) {
+      const rawId = (node.uri || '').split('/').pop() || ''
+      if (rawId) {
+        const blockId = toDashID(rawId)
+        pageBlockIds.add(blockId)
+      }
+    }
+  })
+
+  // Find and delete old assets
+  const existingFiles = fs.readdirSync(assetDir)
+  existingFiles.forEach(filename => {
+    // Check if this file belongs to any block in this page
+    const belongsToThisPage = Array.from(pageBlockIds).some(blockId => 
+      filename.startsWith(blockId + '-')
+    )
+    
+    // If it belongs to this page but is not in current assets, delete it
+    if (belongsToThisPage && !currentAssets.has(filename)) {
+      const filePath = path.join(assetDir, filename)
+      try {
+        fs.unlinkSync(filePath)
+        log.info(`Deleted old asset: ${filename}`)
+      } catch (err) {
+        log.error(`Failed to delete old asset ${filename}: ${err}`)
+      }
+    }
+  })
 }
 
 function transformAttachmentUrl(attachmentUrl: string, blockId: string) {
