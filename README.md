@@ -81,20 +81,16 @@ node bin/cli.js generate my-blog
 node bin/cli.js preview my-blog
 ```
 
-**在瀏覽器中查看**：
+執行 `preview` 命令後，打開瀏覽器訪問 **http://localhost:3000** 即可查看您的網站。
 
-1. 執行 `preview` 命令後，終端機會顯示伺服器已啟動
-2. 打開瀏覽器，訪問 `http://localhost:3000`
-3. 即可看到您的部落格網站
+**預覽工作流程**：
 
-**停止預覽伺服器**：
+1. 在 Notion 中修改內容
+2. 執行 `node bin/cli.js generate my-blog` 重新生成
+3. 在瀏覽器中按 `Cmd + Shift + R` (Mac) 或 `Ctrl + Shift + R` (Windows) 強制刷新頁面
+4. 查看更新後的內容
 
-- 在終端機中按 `Ctrl + C`
-
-**提示**：
-
-- 修改 Notion 內容後，需要重新執行 `generate` 命令
-- 然後在瀏覽器中按 `Cmd + Shift + R`（Mac）或 `Ctrl + Shift + R`（Windows）強制刷新頁面
+> 💡 **提示**：預覽伺服器會持續運行，按 `Ctrl + C` 可停止伺服器。
 
 ## 📖 使用說明
 
