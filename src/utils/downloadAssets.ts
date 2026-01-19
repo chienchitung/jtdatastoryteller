@@ -68,8 +68,9 @@ export async function downloadAssets(
         
         const urlObj = transformAttachmentUrl(source, blockId)
         if (urlObj && blockId) {
-          const { url, filename } = urlObj
-          const localFilename = `${blockId}-${filename}`
+          const { url, filename, uuid } = urlObj
+          // Include UUID to ensure uniqueness even if filename is same
+          const localFilename = `${blockId}-${uuid}-${filename}`
           const localPath = path.join(assetDir, localFilename)
           const publicPath = `assets/notion/${localFilename}`
 
@@ -161,7 +162,8 @@ function transformAttachmentUrl(attachmentUrl: string, blockId: string) {
   
   return {
     url: proxyUrl,
-    filename: filename
+    filename: filename,
+    uuid: uuid
   }
 }
 

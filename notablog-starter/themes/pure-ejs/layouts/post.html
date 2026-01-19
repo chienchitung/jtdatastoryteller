@@ -25,6 +25,8 @@
   <div class="Container GlobalLayout">
     <article class="Post">
       <header class="Post__Header">
+        <!-- Cover image removed to avoid duplication with content images. 
+             If you want to restore it, uncomment the following block.
         <% if (post.cover || post.iconUrl) { %>
           <div class="Post__CoverWrapper">
             <% if (post.cover) { %>
@@ -40,6 +42,7 @@
             <% } %>
           </div>
         <% } %>
+        -->
 
         <h1 class="Post__Title"><%= post.title %></h1>
 
@@ -86,10 +89,11 @@
     <%- include('partials/footer.html', { siteMeta }) %>
   </div>
 
-  <!-- 重新開啟目錄按鈕（固定在視窗右下） -->
+  <!-- 重新開啟目錄按鈕（固定在視窗右側） -->
   <button class="TOC__Trigger" id="tocTrigger" aria-label="顯示目錄">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <span class="TOC__Trigger__Text">目錄</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </button>
 
@@ -307,15 +311,19 @@
       border-radius: 12px 0 0 12px;
       box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.15);
       cursor: pointer;
-      width: 60px;
-      height: 60px;
+      width: auto;
+      min-width: 80px;
+      height: 50px;
+      padding: 0 16px;
       display: none;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       color: #1f2937;
-      font-weight: 700;
-      font-size: 1.5rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, width 0.2s ease;
       z-index: 999;
     }
 
@@ -325,7 +333,7 @@
 
     .TOC__Trigger:hover {
       box-shadow: -6px 6px 32px rgba(0, 0, 0, 0.2);
-      transform: translateY(-50%) scale(1.08);
+      transform: translateY(-50%) translateX(-4px);
       background: #f9fafb;
     }
 
@@ -333,18 +341,16 @@
       transform: translateY(-50%) scale(0.95);
     }
 
+    .TOC__Trigger__Text {
+      display: block;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+
     .TOC__Trigger svg {
       flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-    }
-
-    .TOC__Trigger__Text {
-      display: none;
-    }
-
-    .TOC__Trigger__Hint {
-      display: none;
+      width: 20px;
+      height: 20px;
     }
 
     .TOC__Header {
@@ -470,79 +476,20 @@
       }
     }
 
-    /* 中等螢幕 - 移動目錄到內容下方 */
+    /* 中型螢幕和手機平板 - 完全隱藏目錄 */
     @media (max-width: 1200px) {
       .TOC {
-        position: static;
-        width: 100%;
-        max-height: none;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        transform: none;
-        opacity: 1;
-      }
-
-      .TOC.hidden {
-        display: none;
-      }
-
-      .TOC__Close {
-        display: none;
+        display: none !important;
       }
 
       .TOC__Trigger {
         display: none !important;
       }
 
-      .TOC__Toggle {
-        display: block;
-      }
-
-      .TOC.collapsed .TOC__Nav {
-        display: none;
-      }
-
-      .TOC__Nav {
-        max-height: 400px;
-      }
-    }
-
-    /* 小螢幕優化 */
-    @media (max-width: 768px) {
+      /* 移除文章內容的 margin，因為沒有目錄了 */
       .Post {
         margin-right: 0;
         padding-right: 0;
-      }
-
-      .TOC {
-        padding: 16px;
-        margin-top: 24px;
-        margin-bottom: 24px;
-      }
-
-      .TOC__Item {
-        font-size: 0.8125rem;
-      }
-
-      .TOC__Item[data-level="3"] {
-        padding-left: 16px;
-      }
-
-      .TOC__Item[data-level="4"],
-      .TOC__Item[data-level="5"],
-      .TOC__Item[data-level="6"] {
-        padding-left: 24px;
-      }
-
-      .TOC__Trigger {
-        display: none !important;
-      }
-    }
-
-    /* 平板優化 */
-    @media (max-width: 1200px) {
-      .TOC__Trigger {
-        display: none !important;
       }
     }
   </style>

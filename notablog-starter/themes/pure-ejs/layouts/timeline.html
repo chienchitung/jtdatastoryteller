@@ -139,6 +139,9 @@
       height: 100%; /* Fill available height */
       min-height: 240px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
       border-radius: 8px;
     }
 
@@ -274,8 +277,8 @@
       opacity: 0.7;
     }
 
-    /* Responsive - Mobile & Tablet */
-    @media (max-width: 1200px) {
+    /* Responsive - Mobile & Tablet (手機和平板使用較小圖片) */
+    @media (max-width: 1024px) {
       .Timeline {
         padding: 0 16px;
       }
@@ -319,14 +322,18 @@
         gap: 0 !important;
       }
 
-      /* Placeholder image - first in visual order */
+      /* Placeholder image - first in visual order - 較小尺寸適合手機平板 */
       .Timeline__Content tr::before {
         order: 1 !important;
         width: 100% !important;
-        height: 140px !important;
-        min-height: 140px !important;
-        margin-bottom: 16px !important;
+        height: 120px !important;
+        min-height: 120px !important;
+        max-height: 120px !important;
+        margin-bottom: 12px !important;
         flex-shrink: 0 !important;
+        background-size: contain !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
       }
 
       /* Col 1 (name/title): Third in visual order */
@@ -381,9 +388,19 @@
         margin-top: 8px !important;
       }
 
-      /* Col 5 (image): Hidden */
-      .Timeline__Content td:nth-child(5) {
+      /* Col 5 (image): FORCE HIDE - must be completely invisible */
+      .Timeline__Content td:nth-child(5),
+      .Timeline__Content td:nth-child(5) *,
+      .Timeline__Content td:nth-child(5) img,
+      .Timeline__Content td:nth-child(5) a {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
       }
 
       /* Reset ALL inner content */
@@ -459,13 +476,23 @@
   <style>
     /* Add support for dynamic background image */
     .Timeline__Content tr.has-image::before {
-      background: var(--card-image) center center / cover no-repeat;
-      /* Remove gradient override if image is present */
+      background: var(--card-image) center center / contain no-repeat #f5f5f5;
+      /* Use contain to show full image without cropping, with light gray background */
     }
 
-    /* Hide the 5th column (Image source) as it's displayed in ::before */
-    .Timeline__Content td:nth-child(5) {
-      display: none;
+    /* Hide the 5th column (Image source) - it's displayed in ::before instead */
+    .Timeline__Content td:nth-child(5),
+    .Timeline__Content td:nth-child(5) *,
+    .Timeline__Content td:nth-child(5) img,
+    .Timeline__Content td:nth-child(5) a {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
     }
   </style>
 
