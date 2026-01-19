@@ -36,6 +36,22 @@
 
   <%- include('partials/footer.html', { siteMeta }) %>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.NotionContent');
+
+            containers.forEach(container => {
+                const links = container.querySelectorAll('a');
+                links.forEach(link => {
+                    const images = link.querySelectorAll('img');
+                    if (images.length === 1 && link.textContent.trim() === '') {
+                        link.replaceWith(images[0]);
+                    }
+                });
+            });
+        });
+    </script>
+
 <style>
 /* Profile Layout Styles */
 .ProfileContent {

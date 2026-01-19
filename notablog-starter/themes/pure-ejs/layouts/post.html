@@ -97,6 +97,60 @@
     </svg>
   </button>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const containers = document.querySelectorAll('.Post__Content');
+
+      containers.forEach(container => {
+        const links = container.querySelectorAll('a');
+        links.forEach(link => {
+          const images = link.querySelectorAll('img');
+          if (images.length === 1 && link.textContent.trim() === '') {
+            link.replaceWith(images[0]);
+          }
+        });
+
+        const codeBlocks = container.querySelectorAll('pre');
+        codeBlocks.forEach(pre => {
+          if (pre.querySelector('.CopyButton')) return;
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'CopyButton';
+          button.textContent = 'Copy';
+
+          button.addEventListener('click', async () => {
+            const codeElement = pre.querySelector('code');
+            const text = codeElement ? codeElement.innerText : pre.innerText;
+
+            try {
+              await navigator.clipboard.writeText(text.trimEnd());
+              button.textContent = 'Copied';
+            } catch (error) {
+              const textarea = document.createElement('textarea');
+              textarea.value = text;
+              textarea.setAttribute('readonly', '');
+              textarea.style.position = 'absolute';
+              textarea.style.left = '-9999px';
+              document.body.appendChild(textarea);
+              textarea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textarea);
+              button.textContent = 'Copied';
+            }
+
+            window.setTimeout(() => {
+              button.textContent = 'Copy';
+            }, 1500);
+          });
+
+          pre.classList.add('has-copy-button');
+          pre.appendChild(button);
+        });
+      });
+    });
+  </script>
+
   <style>
     .Post {
       margin-top: 60px;
@@ -227,6 +281,31 @@
     .Post__Content img {
       max-width: 100%;
       border-radius: 8px;
+    }
+
+    .Post__Content pre.has-copy-button {
+      position: relative;
+      padding-top: 2.5rem;
+    }
+
+    .Post__Content .CopyButton {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--color-text-default);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .Post__Content .CopyButton:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
     }
     
     .Post__Content h1, .Post__Content h2, .Post__Content h3 {

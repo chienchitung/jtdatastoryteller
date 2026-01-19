@@ -4,3 +4,5 @@ test/*
 *.json
 .eslintrc.js
 rollup.config.js
+notablog-starter/public/*
+notablog-starter/cache/*

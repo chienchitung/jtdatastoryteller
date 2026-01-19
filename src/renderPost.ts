@@ -177,7 +177,10 @@ Cache of page "${pageID}" is corrupted, run "notablog generate --fresh <path_to_
       const outDir = config.outDir
       const outPath = path.join(outDir, pageMetadata.url)
 
-      const contentHTML = renderToHTML(tree)
+      const contentHTML = renderToHTML(tree).replace(
+        /<img /g,
+        '<img loading="lazy" decoding="async" '
+      )
       const pageHTML = renderer.render(pageMetadata.template, {
         siteMeta: siteContext,
         post: {
