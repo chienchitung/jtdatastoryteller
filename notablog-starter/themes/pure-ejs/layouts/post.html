@@ -20,6 +20,7 @@
   </style>
 </head>
 
+  <div id="reading-progress-bar"></div>
   <%- include('partials/navbar.html', { siteMeta }) %>
   
   <div class="Container GlobalLayout">
@@ -149,9 +150,32 @@
         });
       });
     });
+    // Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      
+      const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (progressBar) {
+        progressBar.style.width = scrolled + '%';
+      }
+    });
   </script>
 
   <style>
+    #reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background-color: var(--color-primary);
+      z-index: 9999;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
     .Post {
       margin-top: 60px;
       margin-bottom: 80px;
