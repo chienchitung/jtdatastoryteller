@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <%- include('partials/head.html', { fontSize: 20, favicon: siteMeta.iconUrl }) %>
-  <title><%= post.title %>&nbsp;|&nbsp;<%= siteMeta.title %></title>
-  <meta property="og:type" content="blog">
-  <meta property="og:title" content="<%= post.title %>">
-  <% if (post.description) { %>
-    <meta name="description" content="<%= post.descriptionPlain %>">
-    <meta property="og:description" content="<%= post.descriptionPlain %>">
-  <% } %>
-  <% if (post.iconUrl) { %>
-    <meta property="og:image" content="<%= post.iconUrl %>">
-  <% } %>
-</head>
+  <head>
+    <%- include('partials/head.html', { fontSize: 20, favicon: siteMeta.iconUrl
+    }) %>
+    <title><%= post.title %>&nbsp;|&nbsp;<%= siteMeta.title %></title>
+    <meta property="og:type" content="blog" />
+    <meta property="og:title" content="<%= post.title %>" />
+    <% if (post.description) { %>
+    <meta name="description" content="<%= post.descriptionPlain %>" />
+    <meta property="og:description" content="<%= post.descriptionPlain %>" />
+    <% } %> <% if (post.iconUrl) { %>
+    <meta property="og:image" content="<%= post.iconUrl %>" />
+    <% } %>
+  </head>
 
   <%- include('partials/navbar.html', { siteMeta }) %>
-  
+
   <div class="Works">
     <header class="Works__Header">
       <h1 class="Works__Title"><%= post.title %></h1>
       <% if (post.description) { %>
-        <p class="Works__Desc"><%= post.description %></p>
+      <p class="Works__Desc"><%= post.description %></p>
       <% } %>
     </header>
 
-    <div class="Works__Content">
-      <%- post.contentHTML %>
-    </div>
+    <div class="Works__Content"><%- post.contentHTML %></div>
 
     <%- include('partials/footer.html', { siteMeta }) %>
   </div>
@@ -120,12 +117,12 @@
       overflow: hidden;
       transition: all 0.3s ease;
       min-height: 420px; /* Increased card height */
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     }
 
     .Works__Content tr:hover {
       transform: translateY(-8px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
     }
 
     /* Placeholder image at top */
@@ -153,7 +150,7 @@
     .Works__Content td {
       display: block;
       border: none !important;
-      padding: 0 16px;
+      padding: 0 20px;
       margin: 0;
       min-width: 0;
     }
@@ -164,8 +161,8 @@
       font-size: 0.95rem;
       font-weight: 700;
       line-height: 1.4;
-      margin-top: 16px;
-      margin-bottom: 0 !important;
+      margin-top: 20px;
+      margin-bottom: 12px !important;
       padding-bottom: 0 !important;
       overflow: visible !important;
       max-height: none !important;
@@ -188,18 +185,21 @@
       padding: 0 !important;
       line-height: inherit !important;
       overflow: visible !important;
+      font-weight: 700 !important; /* Force consistent bold weight */
+      font-size: inherit !important;
+      color: inherit !important;
     }
 
     /* Col 2: Description */
     .Works__Content td:nth-child(2) {
       order: 1;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--color-text-gray);
-      line-height: 1.5;
-      margin-top: 4px !important; /* Minimal gap from title */
-      margin-bottom: 16px;
+      line-height: 1.7;
+      margin-top: 0 !important;
+      margin-bottom: 20px;
       padding-top: 0 !important;
-      flex-grow: 0;
+      flex-grow: 1;
       overflow: visible !important;
       max-height: none !important;
     }
@@ -217,7 +217,7 @@
     .Works__Content td:nth-child(3) {
       order: 2;
       margin-top: auto;
-      padding-bottom: 16px;
+      padding-bottom: 20px;
     }
 
     .Works__Content td:nth-child(3) a {
@@ -231,9 +231,9 @@
       font-weight: 800;
       transition: opacity 0.2s;
     }
-    
+
     .Works__Content td:nth-child(3) a::after {
-      content: "READ MORE";
+      content: 'READ MORE';
       color: var(--color-text-default);
       font-size: 0.65rem;
       font-weight: 800;
@@ -252,24 +252,80 @@
 
     /* Responsive */
     @media (max-width: 1400px) {
-      .Works__Content table { grid-template-columns: repeat(3, 1fr); }
+      .Works__Content table {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     @media (max-width: 1024px) {
-      .Works__Content table { grid-template-columns: repeat(2, 1fr); }
+      .Works__Content table {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 640px) {
-      .Works { padding: 0 20px; }
-      .Works__Content table { grid-template-columns: 1fr; }
+      .Works {
+        padding: 0 20px;
+      }
+      .Works__Content table {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Hide elements */
-    .Works__Content td > * { border: none !important; }
-    .Works__Content td:empty { display: none; }
-    .Works__Content .PageRoot > h3 { display: none !important; }
-    .Works__Content .CollectionInline > h3 { display: none !important; }
-    .Works__Content h3 { display: none !important; }
+    .Works__Content td > * {
+      border: none !important;
+    }
+    .Works__Content td:empty {
+      display: none;
+    }
+    .Works__Content .PageRoot > h3 {
+      display: none !important;
+    }
+    .Works__Content .CollectionInline > h3 {
+      display: none !important;
+    }
+    .Works__Content h3 {
+      display: none !important;
+    }
+
+    /* Dynamic image support */
+    .Works__Content tr.has-image::before {
+      /* Use contain to ensure full image visibility (especially for text) */
+      background: var(--card-image) center center / contain no-repeat !important;
+      background-color: #ffffff !important; /* White background for whitespace */
+      border-bottom: 1px solid #eaeaea !important; /* Subtle separator line */
+    }
   </style>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tables = document.querySelectorAll('.Works__Content table')
+
+      tables.forEach(table => {
+        const rows = table.querySelectorAll('tr')
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('td')
+          // Works table has 4 columns, image is in 4th (index 3)
+          if (cells.length >= 4) {
+            const imageCell = cells[3]
+            const link = imageCell.querySelector('a')
+
+            if (link) {
+              const href = link.getAttribute('href')
+              if (
+                href &&
+                (href.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i) ||
+                  href.startsWith('assets/notion/'))
+              ) {
+                // Set the row background
+                row.style.setProperty('--card-image', `url('${href}')`)
+                row.classList.add('has-image')
+              }
+            }
+          }
+        })
+      })
+    })
+  </script>
 </html>
