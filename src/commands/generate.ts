@@ -12,7 +12,7 @@ import { renderIndex } from '../renderIndex'
 import { renderPost } from '../renderPost'
 import { log, parseJSON } from '../utils/misc'
 import { toDashID } from '../utils/notion'
-import { RenderPostTask, ThemeConfig } from '../types'
+import { RenderPostTask, SiteContext, ThemeConfig } from '../types'
 
 type GenerateOptions = {
   /** Concurrency for Notion page downloading and rendering. */
@@ -30,7 +30,10 @@ export async function generate(
 ): Promise<number> {
   const { concurrency, verbose, ignoreCache } = opts
 
-  const notionAgent = createAgent({ debug: verbose })
+  const notionAgent = createAgent({
+    debug: verbose,
+    token: process.env.NOTION_TOKEN || process.env.token_v2,
+  })
   const cache = new Cache(path.join(workDir, 'cache'))
   const config = new Config(path.join(workDir, 'config.json'))
 
@@ -76,6 +79,7 @@ export async function generate(
   /** Copy theme assets. */
   log.info('Copy theme assets')
   const assetDir = path.join(themeDir, 'assets')
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   copyDirSync(assetDir, outDir)
 
   /** Fetch site metadata. */
@@ -178,5 +182,54 @@ export async function generate(
     )
   })
   await Promise.all(tasks)
+
+  /** Prune orphaned files. */
+  pruneOrphanedFiles(siteContext, dirs)
+
   return 0
+}
+
+/**
+ * Delete HTML files in outDir and tagDir that are no longer in siteContext.
+ */
+function pruneOrphanedFiles(
+  siteContext: SiteContext,
+  dirs: { outDir: string; tagDir: string }
+): void {
+  log.info('Prune orphaned files')
+
+  const validFiles = new Set<string>()
+  validFiles.add('index.html')
+
+  // Collect valid page URLs
+  siteContext.pages.forEach(page => {
+    if (page.publish && !/^https?:\/\//.test(page.url)) {
+      validFiles.add(page.url)
+    }
+  })
+
+  // Collect valid tag URLs
+  siteContext.tagMap.forEach((_pages, tagVal) => {
+    validFiles.add(`tag/${tagVal}.html`)
+  })
+
+  /** Helper to scan and delete. */
+  const scanAndDelete = (dir: string, relativePrefix = '') => {
+    if (!fs.existsSync(dir)) return
+    const files = fs.readdirSync(dir)
+    files.forEach(file => {
+      const filePath = path.join(dir, file)
+      const stats = fs.statSync(filePath)
+      if (stats.isFile() && file.endsWith('.html')) {
+        const relativePath = path.join(relativePrefix, file)
+        if (!validFiles.has(relativePath)) {
+          log.info(`Delete orphaned file: ${relativePath}`)
+          fs.unlinkSync(filePath)
+        }
+      }
+    })
+  }
+
+  scanAndDelete(dirs.outDir)
+  scanAndDelete(dirs.tagDir, 'tag')
 }

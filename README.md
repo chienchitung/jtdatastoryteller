@@ -13,6 +13,7 @@
 - 🖼️ **圖片本地化**：自動下載 Notion 圖片到本地
 - 🌐 **外部連結支援**：可在 Notion 中設定外部連結，自動跳過渲染
 - 📱 **響應式設計**：內建的 pure-ejs 主題支援各種裝置
+- 🧹 **自動同步清理**：自動偵測並刪除 Notion 中已移除或取消發布的對應本地檔案
 
 ## 📦 安裝
 
@@ -132,6 +133,7 @@ node bin/cli.js preview <path_to_blog> [options]
 當您在 Notion 中替換圖片時，Notablog 會自動處理圖片的下載和清理：
 
 **自動清理被替換的圖片**：
+
 - 系統會追蹤每個頁面使用的圖片
 - 當頁面的圖片被替換時，舊圖片會自動刪除
 - 不會影響其他頁面的圖片
@@ -158,6 +160,15 @@ node bin/cli.js generate my-blog
 ```
 
 > 💡 **提示**：圖片檔案會儲存在 `<your-blog>/public/assets/notion/` 目錄中，檔名格式為 `{blockId}-{filename}`
+> 161:
+> 162: #### 🧹 自動同步清理 (Pruning)
+> 163:
+> 164: Notablog 會自動保持本地檔案與 Notion 的一致性：
+> 165: - 當您在 Notion 中刪除頁面、取消發布、或更改 URL 時
+> 166: - 執行 `generate` 命令後，系統會自動識別並刪除 `public/` 中過時的 `.html` 檔案
+> 167: - 同時也會清理 `public/tag/` 中不再需要的標籤頁面
+> 168:
+> 169: 這確保了您的部署目錄始終保持乾淨，不會累積無用的舊檔案。
 
 ## 🛠️ 開發指南
 
@@ -234,6 +245,7 @@ themes/pure-ejs/
 3. **TypeScript 配置優化**：修正 `tsconfig.json` 的 moduleResolution 設定
 4. **渲染引擎修復**：修正 Squirrelly 渲染器的參數問題
 5. **專案結構整理**：移除未使用的檔案和重複配置
+6. **自動同步清理**：新增 `pruneOrphanedFiles` 邏輯，自動刪除 Notion 中已移除的本地 HTML 檔案
 
 ## 📤 部署
 

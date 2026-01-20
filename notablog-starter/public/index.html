@@ -1102,7 +1102,11 @@ body {
     .HeroGrid {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 40px;
+        gap: 32px;
+    }
+
+    .HeroTitle {
+        font-size: 2.8rem;
     }
 
     .HeroContent {
@@ -1118,6 +1122,7 @@ body {
 
     .HeroActions {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .AvatarWrapper {
@@ -1154,12 +1159,136 @@ body {
     }
     
     .FormCard {
-        padding: 30px;
+        padding: 40px;
     }
 }
 
 @media (max-width: 600px) {
-    /* Mobile: 1 Column */
+    .HeroSection {
+        padding: 50px 0 40px;
+    }
+
+    .HeroBadge {
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        margin-bottom: 16px;
+    }
+
+    .HeroTitle {
+        font-size: 2.22rem;
+        margin-bottom: 16px;
+        line-height: 1.25;
+    }
+
+    .HeroDesc {
+        font-size: 1.05rem;
+        margin-bottom: 32px;
+        padding: 0 10px;
+        line-height: 1.7;
+    }
+
+    .HeroActions {
+        width: 100%;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 20px;
+    }
+
+    .Btn--lg {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+
+    /* Features Section Mobile */
+    .Section {
+        padding: 60px 0;
+    }
+
+    .SectionTitle {
+        font-size: 1.85rem;
+        margin-bottom: 12px;
+    }
+
+    .SectionSubtitle {
+        font-size: 1rem;
+    }
+
+    .FeatureCard {
+        padding: 24px 20px;
+    }
+
+    .FeatureIcon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+    }
+
+    .FeatureIcon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .FeatureTitle {
+        font-size: 1.15rem;
+    }
+
+    .FeatureDesc {
+        font-size: 0.95rem;
+    }
+
+    /* About Section Mobile */
+    .AboutContent p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .StatItem {
+        padding: 24px 16px;
+    }
+
+    .StatNumber {
+        font-size: 2.1rem;
+        margin-bottom: 4px;
+    }
+
+    .StatLabel {
+        font-size: 0.8rem;
+    }
+
+    /* Contact Form Mobile */
+    .FormCard {
+        padding: 32px 20px;
+        border-radius: 16px;
+    }
+
+    .FormTitle {
+        font-size: 1.7rem;
+    }
+
+    .FormSubtitle {
+        font-size: 0.95rem;
+    }
+
+    .FormGroup label {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+    }
+
+    .FormGroup input,
+    .FormGroup textarea {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+    }
+
+    .Btn--submit {
+        padding: 14px;
+        font-size: 1.05rem;
+        margin-top: 8px;
+        border-radius: 8px;
+    }
+
+    /* Grid Fallback */
     .Grid--3 {
         grid-template-columns: 1fr;
     }
@@ -1167,6 +1296,20 @@ body {
     .Grid--3 > :last-child {
         grid-column: auto;
         max-width: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .HeroTitle {
+        font-size: 1.95rem;
+    }
+    
+    .Container {
+        padding: 0 16px;
+    }
+    
+    .StatNumber {
+        font-size: 1.85rem;
     }
 }
 </style>
